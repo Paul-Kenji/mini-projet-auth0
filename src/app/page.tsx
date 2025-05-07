@@ -1,39 +1,34 @@
-import React from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+"use client";
 
-const HomePage = () => {
+import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+
+export default function Home() {
+
+
+  const router = useRouter();
+
+  const handleLogin = () => {
+    router.push('/auth/login?returnTo=/connectedPage');
+  };
+
+  const handleSignUp = () => {
+    router.push('/auth/signup?returnTo=/');
+  };
+
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Bienvenue sur mon projet Next.js !
-      </Typography>
-      
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          marginTop: 4,
-          flexDirection: 'row',
-        }}
-      >
-        <Button variant="contained" color="primary">
-         inscrire
-        </Button>
-        <Button variant="outlined" color="secondary">
+      <div>
+          <Button variant="contained" color="primary" component="a" onClick={handleSignUp}>
+            Inscrire
+          </Button>
+
+        <Button variant="outlined" color="secondary" onClick={handleLogin}>
           Connexion
         </Button>
-      </Box>
-    </Container>
-  );
-};
+    </div>
 
-export default HomePage;
+    //To do to remove error page when connected with deconnection button to go back in page.tsx
+    )
+    
+}
