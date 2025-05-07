@@ -8,7 +8,6 @@ export default function ConnectedPage() {
   const router = useRouter();
 
   const handleLogout = () => {
-    //router.push('https://dev-ol3ted2uqvfouc1r.us.auth0.com/v2/logout?returnTo=/page');
     router.push('/auth/logout');
 };
 
