@@ -12,6 +12,7 @@ export default function Home() {
   const handleLogin = () => {
     router.push('/auth/login?returnTo=/connectedPage');
   };
+  
 
   const handleSignUp = () => {
     router.push('/auth/signup?returnTo=/');
