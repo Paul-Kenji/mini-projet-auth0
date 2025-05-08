@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = () => {
-    router.push('/auth/login?returnTo=/connectedPage');
+    router.push('/api/auth/login?returnTo=/connectedPage');
   };
   
 
