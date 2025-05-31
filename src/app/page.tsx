@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  console.log('AUTH0_BASE_URL:', process.env.AUTH0_BASE_URL)
 
   const handleLogin = () => {
     // IMPORTANT: Utilise /api/auth/login et non /auth/login
@@ -19,17 +18,10 @@ export default function Home() {
   };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      minHeight: '100vh',
-      gap: '20px'
-    }}>
+    <div>
       <h1>Bienvenue</h1>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '200px' }}>
+      <div>
         <Button 
           variant="contained" 
           color="primary" 
