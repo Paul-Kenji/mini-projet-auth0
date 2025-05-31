@@ -2,17 +2,14 @@
 
 import React from "react";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   const handleLogin = () => {
-    router.push('/api/auth/login');
+    window.location.href = "/api/auth/login";
   };
   
   const handleSignUp = () => {
-    router.push('/api/auth/login?screen_hint=signup');
+    window.location.href = "/api/auth/signup";
   };
 
   return (
