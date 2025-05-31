@@ -9,6 +9,12 @@ export const GET = handleAuth({
     logoutParams: {
       federated: true
     }
+  }),
+  signup: handleLogin({
+    returnTo: "/connectedPage",
+    authorizationParams: {
+      screen_hint: "signup"
+    }
   })
 })
 
