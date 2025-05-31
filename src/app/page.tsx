@@ -8,12 +8,10 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = () => {
-    // IMPORTANT: Utilise /api/auth/login et non /auth/login
     router.push('/api/auth/login');
   };
   
   const handleSignUp = () => {
-    // IMPORTANT: Utilise /api/auth/login et non /auth/signup
     router.push('/api/auth/login?screen_hint=signup');
   };
 

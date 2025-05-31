@@ -1,5 +1,25 @@
-import { handleAuth } from "@auth0/nextjs-auth0"
+import { handleAuth, handleLogin, handleLogout } from "@auth0/nextjs-auth0"
 
-// Version simplifiée qui fonctionne mieux
-export const GET = handleAuth()
-export const POST = handleAuth()
+export const GET = handleAuth({
+  login: handleLogin({
+    returnTo: "/connectedPage"
+  }),
+  logout: handleLogout({
+    returnTo: "/",
+    logoutParams: {
+      federated: true
+    }
+  })
+})
+
+export const POST = handleAuth({
+  login: handleLogin({
+    returnTo: "/connectedPage"
+  }),
+  logout: handleLogout({
+    returnTo: "/",
+    logoutParams: {
+      federated: true
+    }
+  })
+})
