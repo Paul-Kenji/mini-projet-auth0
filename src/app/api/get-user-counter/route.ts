@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ count: doc.value });
   } catch (error) {
-    console.error("Erreur API /get-user-counter :", error); // 🔥 Affiche l'erreur dans Vercel
+    console.error("Erreur API /get-user-counter :", error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 }
