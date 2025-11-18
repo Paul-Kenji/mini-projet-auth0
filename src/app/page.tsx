@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
+  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
+    null
+  );
   const [city, setCity] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [auroraChance, setAuroraChance] = useState<number | null>(null);
@@ -21,30 +23,64 @@ export default function Home() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
 
-        // Réinitialise l’erreur si tout se passe bien
-        setError(null);
         setLocation({ lat, lon });
+        setError(null);
 
         try {
-          const res = await fetch(
+          // 1️⃣ ​📍 Récupération de la ville via OpenStreetMap
+          const geoRes = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
           );
-          const data = await res.json();
+          const geoData = await geoRes.json();
+
           const cityName =
-            data.address?.city ||
-            data.address?.town ||
-            data.address?.village ||
-            data.address?.municipality ||
-            data.address?.county ||
+            geoData.address?.city ||
+            geoData.address?.town ||
+            geoData.address?.village ||
+            geoData.address?.municipality ||
+            geoData.address?.county ||
             "Unknown city";
+
           setCity(cityName);
 
-          // Simuler un fetch API IA pour l’instant
-          // Remplacer par ton vrai fetch vers /api/aurora
-          await new Promise((r) => setTimeout(r, 1000));
-          setAuroraChance(Math.floor(Math.random() * 101));
-        } catch {
-          setError("Impossible de récupérer les informations");
+          // 2️⃣ 🌦️ Récupération météo via OPEN-METEO
+          const meteoRes = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=cloud_cover&timezone=auto`
+          );
+          const meteoData = await meteoRes.json();
+          console.log("Meteo Data:", meteoData);
+
+          const cloudCover = meteoData?.hourly?.cloud_cover?.[0] ?? 0;
+
+          // NOAA Kp API
+          const kpRes = await fetch(
+            "https://services.swpc.noaa.gov/json/planetary_k_index_1m.json"
+          );
+          const kpData = await kpRes.json();
+
+          // On récupère le dernier relevé
+          const kpIndex = kpData?.[kpData.length - 1]?.kIndex ?? 0;
+
+          console.log("Cloud:", cloudCover, "Kp:", kpIndex);
+
+          // 3️⃣ 🤖 Envoi à Gemini via route API
+          const aiRes = await fetch("/api/aurora", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              lat,
+              lon,
+              city: cityName,
+              kpIndex,
+              cloudCover,
+            }),
+          });
+
+          const aiData = await aiRes.json();
+          setAuroraChance(aiData.percentage);
+        } catch (err) {
+          console.error(err);
+          setError("Erreur lors de la récupération des informations");
         } finally {
           setLoading(false);
         }
@@ -68,7 +104,9 @@ export default function Home() {
         </p>
       )}
 
-      {loading && <p className="text-xl mt-6 text-gray-400">Calcul en cours… ⏳</p>}
+      {loading && (
+        <p className="text-xl mt-6 text-gray-400">Calcul en cours… ⏳</p>
+      )}
 
       {!loading && auroraChance !== null && (
         <p className="text-2xl font-bold mt-6">
