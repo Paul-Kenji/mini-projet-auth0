@@ -80,7 +80,7 @@ export default function Home() {
           setAuroraChance(aiData.percentage);
         } catch (err) {
           console.error(err);
-          setError("Erreur lors de la récupération des informations");
+          setError("Error fetching data");
         } finally {
           setLoading(false);
         }
